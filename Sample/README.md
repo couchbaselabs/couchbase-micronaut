@@ -1,6 +1,6 @@
 ## Couchbase Micronaut Demo
 
-This sample application makes use of the updated [micronaut-couchbase package](https://github.com/endercode99/micronaut-couchbase). 
+This sample application makes use of the updated [micronaut-couchbase package](https://github.com/couchbaselabs/couchbase-micronaut). 
 
 ### Note
 The updated micronaut package has not been realased yet. To use it in your micronaut application, download the micronaut-couchbase repository and run the following command to publish the package to your local Maven repository.
