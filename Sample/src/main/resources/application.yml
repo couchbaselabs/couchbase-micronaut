@@ -1,0 +1,8 @@
+micronaut:
+  application:
+    name: couchbaseMicronautDemo
+---
+couchbase:
+  uri: "localhost"
+  username: "Administrator"
+  password: "password"
