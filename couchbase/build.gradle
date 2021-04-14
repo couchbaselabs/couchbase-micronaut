@@ -1,0 +1,28 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
+    annotationProcessor "io.micronaut:micronaut-validation:$micronautVersion"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+    compileOnly "io.micronaut:micronaut-inject-java:$micronautVersion"
+    compile "io.micronaut:micronaut-validation:$micronautVersion"
+    compile "io.micronaut:micronaut-runtime:$micronautVersion"
+
+    testCompile "io.micronaut:micronaut-inject-groovy:$micronautVersion"
+    testCompile "io.micronaut:micronaut-inject-java:$micronautVersion"
+    testCompile "io.micronaut:micronaut-inject-java-test:$micronautVersion"
+    testCompile "io.reactivex.rxjava2:rxjava:$rxJava2Version"
+
+    //testCompile 'com.couchbase.mock:CouchbaseMock:1.5.25'
+
+    testCompile "org.testcontainers:couchbase:1.15.1"
+
+    // Note: Couchbase Java SDK 3.x has been officially released https://blog.couchbase.com/announcing-couchbase-server-6-5-0-whats-new-and-improved/
+
+    compile 'com.couchbase.client:java-client:3.0.5'
+
+}
+
+// Show stdout from gradle test, using while debugging Travis
+test {
+    dependsOn cleanTest
+    testLogging.showStandardStreams = true
+}
