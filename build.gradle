@@ -17,6 +17,7 @@ buildscript {
 
 plugins {
     id "com.github.hierynomus.license" version "0.15.0" apply false
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
 }
 
 repositories {
@@ -69,7 +70,7 @@ subprojects {Project subproject ->
 
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
-    apply from:'https://raw.githubusercontent.com/micronaut-projects/micronaut-core/01e2b1ef1255b584e9e5c1965d334e1190e2ade5/gradle/publishing.gradle'
+//    apply from:'https://raw.githubusercontent.com/micronaut-projects/micronaut-core/01e2b1ef1255b584e9e5c1965d334e1190e2ade5/gradle/publishing.gradle'
 
     jar {
         manifest {
@@ -79,7 +80,7 @@ subprojects {Project subproject ->
         }
     }
 
-    bintray.publish = true
+//    bintray.publish = true
 
     tasks.withType(Test) {
         jvmArgs '-Duser.country=US'
@@ -147,7 +148,7 @@ subprojects {Project subproject ->
 
 }
 
-apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-docs/v${micronautDocsVersion}/gradle/docs.gradle"
+//apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-docs/v${micronautDocsVersion}/gradle/docs.gradle"
 
 allprojects {
     apply plugin: "idea"
