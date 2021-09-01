@@ -124,7 +124,7 @@ subprojects {Project subproject ->
         testCompile "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
 
-        testRuntime "ch.qos.logback:logback-classic:1.2.3"
+        testRuntime "ch.qos.logback:logback-classic:1.2.5"
     }
 
     groovydoc.classpath += project.configurations.documentation
