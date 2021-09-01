@@ -16,14 +16,21 @@
 
 package io.micronaut.configuration.couchbase;
 
+import com.couchbase.client.core.env.Authenticator;
+import com.couchbase.client.core.env.PasswordAuthenticator;
+import com.couchbase.client.core.env.SeedNode;
 import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.env.CouchbaseEnvironment;
+import com.couchbase.client.java.ClusterOptions;
+import com.couchbase.client.java.env.ClusterEnvironment;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
 
 import javax.inject.Singleton;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import java.util.Set;
 
 /**
  * Builds the primary Couchbase Cluster.
@@ -45,13 +52,19 @@ public class DefaultCouchbaseClientFactory {
     @Singleton
     Cluster couchbaseCluster(DefaultCouchbaseConfiguration configuration) {
         // Need to destroy env at end
-        CouchbaseEnvironment env = configuration.buildEnvironment();
-        Cluster cluster = CouchbaseCluster.create(env);
+        ClusterEnvironment env = configuration.buildEnvironment();
 
-        if (!configuration.authDisabled) {
-            cluster.authenticate(configuration.username, configuration.password);
+        Authenticator authenticator = PasswordAuthenticator.create(configuration.username, configuration.password);
+        ClusterOptions options = ClusterOptions.clusterOptions(authenticator).environment(env);
+
+        if (configuration.port.kv.isPresent() || configuration.port.http.isPresent()) {
+            Set<SeedNode> seedNodes = new HashSet<>(Arrays.asList(
+                    SeedNode.create(configuration.uri,
+                            configuration.port.kv,
+                            configuration.port.http)));
+            return Cluster.connect(seedNodes, options);
+        } else {
+            return Cluster.connect(configuration.uri, options);
         }
-
-        return cluster;
     }
 }

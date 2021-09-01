@@ -16,9 +16,9 @@
 
 package io.micronaut.configuration.couchbase;
 
-import com.couchbase.client.java.env.CouchbaseEnvironment;
-import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
+import com.couchbase.client.java.env.ClusterEnvironment;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.runtime.ApplicationConfiguration;
 
 import javax.validation.constraints.NotBlank;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * @author Graham Pople
  * @since 1.0
  */
-//@Requires(classes = ClusterEnvironment.class)
+@Requires(classes = ClusterEnvironment.class)
 @ConfigurationProperties(CouchbaseSettings.PREFIX)
 public class DefaultCouchbaseConfiguration extends AbstractCouchbaseConfiguration {
 
@@ -46,8 +46,6 @@ public class DefaultCouchbaseConfiguration extends AbstractCouchbaseConfiguratio
     @NotBlank
     @NotNull
     String password;
-
-    Boolean authDisabled = false;
 
     Port port = new Port();
 
@@ -70,14 +68,8 @@ public class DefaultCouchbaseConfiguration extends AbstractCouchbaseConfiguratio
     /**
      * @return Builds the Couchbase ClusterEnvironment
      */
-    public CouchbaseEnvironment buildEnvironment() {
-
-        DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment.builder();
-
-        port.http.ifPresent(builder::bootstrapHttpDirectPort);
-        port.carrier.ifPresent(builder::bootstrapCarrierDirectPort);
-        // There are a number of other Couchbase parameters here than can be exposed
-
+    public ClusterEnvironment buildEnvironment() {
+        ClusterEnvironment.Builder builder = ClusterEnvironment.builder();
         return builder.build();
     }
 
@@ -86,7 +78,7 @@ public class DefaultCouchbaseConfiguration extends AbstractCouchbaseConfiguratio
      */
     @ConfigurationProperties("port")
     public static class Port {
+        Optional<Integer> kv = Optional.empty();
         Optional<Integer> http = Optional.empty();
-        Optional<Integer> carrier = Optional.empty();
     }
 }

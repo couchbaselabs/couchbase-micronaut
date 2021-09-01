@@ -17,8 +17,9 @@ package example;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.document.JsonDocument;
-import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.Collection;
+import com.couchbase.client.java.json.JsonObject;
+import com.couchbase.client.java.kv.GetResult;
 import io.micronaut.context.ApplicationContext;
 
 /**
@@ -39,18 +40,18 @@ public class Example {
         Cluster cluster = applicationContext.getBean(Cluster.class);
 
         // Access a Couchbase bucket resource named "default".
-        Bucket bucket = cluster.openBucket("default");
+        Bucket bucket = cluster.bucket("default");
 
-        // Create some JSON to send to the cluster.  It will be on the key "id".
-        JsonDocument doc = JsonDocument.create("id", JsonObject.create().put("foo", "bar"));
+        // Access a Couchbase default collection".
+        Collection collection = bucket.defaultCollection();
 
-        // Upsert the document (upsert does an insert if it's not there, or a replace if it is)
-        bucket.upsert(doc);
+        // Create and Upsert a JSON document key "id" (upsert does an insert if it's not there, or a replace if it is)
+        collection.upsert("id", JsonObject.create().put("foo", "bar"));
 
         // Read back the document
-        JsonDocument result = bucket.get("id");
+        GetResult result = collection.get("id");
 
         // Check the document has the expected content
-        assert (result.content().getString("foo").equals("bar"));
+        assert (result.contentAsObject().getString("name").equals("bar"));
     }
 }

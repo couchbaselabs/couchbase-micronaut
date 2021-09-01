@@ -1,18 +1,16 @@
-import com.couchbase.client.core.lang.Tuple2;
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.document.JsonDocument;
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.mock.CouchbaseMock;
-import io.micronaut.configuration.couchbase.CouchbaseSettings;
+import com.couchbase.client.java.*;
+import com.couchbase.client.java.json.JsonObject;
+import com.couchbase.client.java.kv.GetResult;
+import com.couchbase.client.java.query.QueryResult;
 import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.env.PropertySource;
-import io.micronaut.core.util.CollectionUtils;
+
+import static com.couchbase.client.java.query.QueryOptions.queryOptions;
+
 import org.junit.Test;
 import util.TestUtil;
 
 import java.io.IOException;
-import java.util.Map;
+import java.time.Duration;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -34,28 +32,58 @@ public class DefaultTest {
     @Test
     public void basicKeyValueOperations() throws IOException, InterruptedException {
         String bucketName = "default";
-        // Start the Couchbase mock process
-        Tuple2<ApplicationContext, CouchbaseMock> contentAndMock = TestUtil.initCouchbaseMock(bucketName);
+        String imageName = "couchbase/server";
 
-        try {
-            // Access a Couchbase cluster
-            Cluster cluster = contentAndMock.value1().getBean(Cluster.class);
+        ApplicationContext applicationContext = TestUtil.initCouchbaseTestContainer(bucketName, imageName);
+        Cluster cluster = applicationContext.getBean(Cluster.class);
 
-            // Access a Couchbase bucket resource on the cluster
-            Bucket bucket = cluster.openBucket(bucketName);
+        Collection collection = cluster.bucket(bucketName).defaultCollection();
 
-            // Upsert some JSON to the key "id"
-            bucket.upsert(JsonDocument.create("id", JsonObject.create().put("foo", "bar")));
+        collection.upsert("id", JsonObject.create().put("foo", "bar"));
 
-            // Get that JSON back
-            JsonDocument result = bucket.get("id");
+        Optional<GetResult> result = Optional.ofNullable(collection.get("id"));
 
-            // Check it's what's expected
-            assertEquals("bar", result.content().getString("foo"));
-        }
-        finally {
-            // Finish by stopping the Couchbase mock
-            contentAndMock.value2().stop();
+        assertTrue(result.isPresent());
+        assertEquals("bar", result.get().contentAs(JsonObject.class).getString("foo"));
+    }
+
+    @Test
+    public void basicKeyValueOperationsReactive() throws IOException, InterruptedException {
+        String bucketName = "default";
+        String imageName = "couchbase/server";
+
+        ApplicationContext applicationContext = TestUtil.initCouchbaseTestContainer(bucketName, imageName);
+        ReactiveCluster cluster = applicationContext.getBean(Cluster.class).reactive();
+
+        ReactiveBucket testBucket = cluster.bucket(bucketName);
+        testBucket.waitUntilReady(Duration.ofSeconds(60));
+        ReactiveCollection collection = testBucket.defaultCollection();
+
+        collection.upsert("id", JsonObject.create().put("foo", "bar")).block();
+        JsonObject document = collection.get("id").block().contentAsObject();
+
+        assertEquals("bar", document.getString("foo"));
+    }
+
+    @Test
+    public void basicN1QLOperations() throws IOException, InterruptedException {
+        String bucketName = "default";
+        String imageName = "couchbase/server";
+
+        ApplicationContext applicationContext = TestUtil.initCouchbaseTestContainer(bucketName, imageName);
+        Cluster cluster = applicationContext.getBean(Cluster.class);
+
+        Collection collection = cluster.bucket(bucketName).defaultCollection();
+
+        collection.upsert("id", JsonObject.create().put("foo", "bar"));
+
+        QueryResult result = cluster.query(
+                "select * from `default` where id = $id",
+                queryOptions().parameters(JsonObject.create().put("id", "foo"))
+        );
+
+        for (JsonObject jsonObject : result.rowsAs(JsonObject.class)) {
+            assertEquals("bar", jsonObject.getString("foo"));
         }
     }
 }
