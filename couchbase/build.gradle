@@ -17,7 +17,7 @@ dependencies {
 
     // Note: Couchbase Java SDK 3.x has been officially released https://blog.couchbase.com/announcing-couchbase-server-6-5-0-whats-new-and-improved/
 
-    compile 'com.couchbase.client:java-client:3.0.5'
+    compile 'com.couchbase.client:java-client:3.2.0'
 
 }
 
