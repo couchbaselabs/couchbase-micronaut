@@ -25,9 +25,10 @@ import com.couchbase.client.java.env.ClusterEnvironment;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -58,7 +59,7 @@ public class DefaultCouchbaseClientFactory {
         ClusterOptions options = ClusterOptions.clusterOptions(authenticator).environment(env);
 
         if (configuration.port.kv.isPresent() || configuration.port.http.isPresent()) {
-            Set<SeedNode> seedNodes = new HashSet<>(Arrays.asList(
+            Set<SeedNode> seedNodes = new HashSet<>(Collections.singletonList(
                     SeedNode.create(configuration.uri,
                             configuration.port.kv,
                             configuration.port.http)));

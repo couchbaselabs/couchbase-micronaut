@@ -13,7 +13,7 @@ dependencies {
 
     //testCompile 'com.couchbase.mock:CouchbaseMock:1.5.25'
 
-    testCompile "org.testcontainers:couchbase:1.15.1"
+    testImplementation "org.testcontainers:couchbase:1.16.0"
 
     // Note: Couchbase Java SDK 3.x has been officially released https://blog.couchbase.com/announcing-couchbase-server-6-5-0-whats-new-and-improved/
 
