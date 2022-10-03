@@ -11,9 +11,7 @@ dependencyManagement {
 
 dependencies {
     testCompile project(":couchbase")
-    testCompile "io.micronaut:micronaut-runtime-groovy"
     testCompile "io.micronaut:micronaut-validation"
-    testCompile "io.micronaut.configuration:micronaut-hibernate-validator"
     testCompileOnly "io.micronaut:micronaut-inject-groovy"
     testCompile "org.testcontainers:spock:1.15.1"
     testCompile("org.spockframework:spock-core") {
