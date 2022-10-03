@@ -17,7 +17,7 @@ dependencies {
     compile "io.micronaut.configuration:micronaut-hibernate-validator"
     compile 'org.awaitility:awaitility:4.2.0'
     compile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    runtime "ch.qos.logback:logback-classic:1.2.3"
+    runtime "ch.qos.logback:logback-classic:1.4.1"
 
 
 //    dependencies {
