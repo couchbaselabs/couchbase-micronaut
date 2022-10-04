@@ -10,17 +10,17 @@ dependencyManagement {
 }
 
 dependencies {
-    testCompile project(":couchbase")
-    testCompile "io.micronaut:micronaut-validation"
-    testCompileOnly "io.micronaut:micronaut-inject-groovy"
-    testCompile "org.testcontainers:spock:1.15.1"
-    testCompile("org.spockframework:spock-core") {
+    testImplementation project(":couchbase")
+    testImplementation "io.micronaut:micronaut-validation"
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "org.testcontainers:spock:1.15.1"
+    testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
-    testRuntime "ch.qos.logback:logback-classic:1.4.1"
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.4.1"
 }
 
-licenseTest.enabled = false
+// licenseTest.enabled = false
 
 test {
     jvmArgs '-Duser.country=US'

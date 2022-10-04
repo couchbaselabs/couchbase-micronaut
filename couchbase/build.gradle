@@ -6,12 +6,12 @@ dependencies {
     compile "io.micronaut:micronaut-validation:$micronautVersion"
     compile "io.micronaut:micronaut-runtime:$micronautVersion"
 
-    testCompile "io.micronaut:micronaut-inject-groovy:$micronautVersion"
-    testCompile "io.micronaut:micronaut-inject-java:$micronautVersion"
-    testCompile "io.micronaut:micronaut-inject-java-test:$micronautVersion"
-    testCompile "io.reactivex.rxjava2:rxjava:$rxJava2Version"
+    testImplementation "io.micronaut:micronaut-inject-groovy:$micronautVersion"
+    testImplementation "io.micronaut:micronaut-inject-java:$micronautVersion"
+    testImplementation "io.micronaut:micronaut-inject-java-test:$micronautVersion"
+    testImplementation "io.reactivex.rxjava2:rxjava:$rxJava2Version"
 
-    //testCompile 'com.couchbase.mock:CouchbaseMock:1.5.25'
+    //testImplementation 'com.couchbase.mock:CouchbaseMock:1.5.25'
 
     testImplementation "org.testcontainers:couchbase:1.16.0"
 
