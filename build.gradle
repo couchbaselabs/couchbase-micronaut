@@ -91,7 +91,7 @@ subprojects {Project subproject ->
         reports.html.enabled = !System.getenv("TRAVIS")
         reports.junitXml.enabled = !System.getenv("TRAVIS")
     }
-    
+
     configurations {
         documentation
         all {
@@ -123,21 +123,6 @@ subprojects {Project subproject ->
     groovydoc.classpath += project.configurations.documentation
 
     task allDeps(type: DependencyReportTask) {}
-
-    apply plugin: 'checkstyle'
-
-    checkstyle {
-        toolVersion = 8.10
-        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
-
-        // Per submodule
-        maxErrors = 1
-        maxWarnings = 10
-
-        showViolations = true
-    }
-
-    checkstyleTest.enabled = false
 
 }
 
