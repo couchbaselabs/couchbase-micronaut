@@ -11,13 +11,8 @@ dependencies {
     testCompile "io.micronaut:micronaut-inject-java-test:$micronautVersion"
     testCompile "io.reactivex.rxjava2:rxjava:$rxJava2Version"
 
-    //testCompile 'com.couchbase.mock:CouchbaseMock:1.5.25'
-
     testImplementation "org.testcontainers:couchbase:1.16.0"
-
-    // Note: Couchbase Java SDK 3.x has been officially released https://blog.couchbase.com/announcing-couchbase-server-6-5-0-whats-new-and-improved/
-
-    compile 'com.couchbase.client:java-client:3.2.0'
+    compile 'com.couchbase.client:java-client:3.3.4'
 
 }
 
