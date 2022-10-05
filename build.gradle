@@ -123,6 +123,22 @@ subprojects {Project subproject ->
     groovydoc.classpath += project.configurations.documentation
 
     task allDeps(type: DependencyReportTask) {}
+
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        toolVersion = 8.10
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+
+        // Per submodule
+        maxErrors = 1
+        maxWarnings = 10
+
+        showViolations = true
+    }
+
+    checkstyleTest.enabled = false
+
 }
 
 allprojects {
@@ -134,6 +150,4 @@ allprojects {
             testOutputDir file('build/classes/groovy/test')
         }
     }
-
-    // apply from: rootProject.file('gradle/license.gradle')
 }
