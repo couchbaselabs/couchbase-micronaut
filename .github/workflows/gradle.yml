@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: ['8', '11', '17']
+        java: ['8']
     steps:
        # https://github.com/actions/virtual-environments/issues/709
       - name: Free disk space
@@ -44,6 +44,6 @@ jobs:
         run: |
           [ -f ./setup.sh ] && ./setup.sh || true
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon --parallel --continue
+        run: ./gradlew build
         env:
            TESTCONTAINERS_RYUK_DISABLED: true
