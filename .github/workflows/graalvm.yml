@@ -4,15 +4,7 @@
 #
 # and edit them there. Note that it will be sync'ed to all the Micronaut repos
 name: GraalVM CE CI
-on:
-  push:
-    branches:
-      - main
-      - '[1-9]+.[0-9]+.x'
-  pull_request:
-    branches:
-      - main
-      - '[1-9]+.[0-9]+.x'
+on: [workflow_dispatch]
 jobs:
   build:
     if: github.repository != 'micronaut-projects/micronaut-project-template'
