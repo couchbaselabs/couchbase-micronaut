@@ -135,5 +135,5 @@ allprojects {
         }
     }
 
-    // apply from: rootProject.file('gradle/license.gradle')
+    apply from: rootProject.file('gradle/license.gradle')
 }
