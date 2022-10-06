@@ -52,7 +52,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: "TEST - {workflow} has {status_message} - repo_url"
-          message_format: "TEST - {emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          message_format: "TEST - {emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}>"
           notify_when: "success,failure,cancelled,warnings"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
