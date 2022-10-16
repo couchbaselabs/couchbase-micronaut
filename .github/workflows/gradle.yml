@@ -54,4 +54,4 @@ jobs:
           message_format: "TEST - {emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}>"
           notify_when: "success,failure,cancelled,warnings"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.DA_SLACK_WEBHOOK_URL }}
