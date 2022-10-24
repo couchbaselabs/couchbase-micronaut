@@ -17,7 +17,6 @@ buildscript {
 
 plugins {
     id "com.github.hierynomus.license" version "0.16.1" apply false
-    id "io.spring.dependency-management" version "1.0.11.RELEASE"
 }
 
 repositories {
@@ -118,6 +117,7 @@ subprojects {Project subproject ->
         testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
         testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
         testRuntimeOnly "ch.qos.logback:logback-classic:1.4.1"
+		implementation "org.slf4j:slf4j-api:2.0.3"
     }
 
     groovydoc.classpath += project.configurations.documentation
