@@ -18,7 +18,7 @@ public class TestUtil {
 	private static final String COUCHBASE_USERNAME = "admin";
 	private static final String COUCHBASE_PASSWORD = "test123";
 	public static final String COUCHBASE_BUCKET_NAME = "default";
-	private static final String COUCHBASE_CONTAINER_BASE_IMAGE = "couchbase/server";
+	private static final String COUCHBASE_CONTAINER_BASE_IMAGE = "couchbase/server:7.1.2";
 	private static final String TEST_PROPERTY = "test";
 	private static CouchbaseContainer container;
 	public static ApplicationContext applicationContext;
