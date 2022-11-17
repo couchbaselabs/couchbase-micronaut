@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: ['8']
+        java: ['11']
     steps:
        # https://github.com/actions/virtual-environments/issues/709
       - name: Free disk space
@@ -50,7 +50,7 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notification_title: "TEST - {workflow} has {status_message} - repo_url"
+          notification_title: "TEST - {workflow} has {status_message} - {repo_url}"
           message_format: "TEST - {emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}>"
           notify_when: "success,failure,cancelled,warnings"
         env:

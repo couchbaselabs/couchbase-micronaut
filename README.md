@@ -1,7 +1,6 @@
 # Micronaut Couchbase Configuration #
 
-[![Build Status](https://travis-ci.org/micronaut-projects/micronaut-couchbase.svg?branch=master)](https://travis-ci.org/micronaut-projects/micronaut-couchbase)
-[![Download](https://api.bintray.com/packages/micronaut/core-releases-local/couchbase/images/download.svg)](https://bintray.com/micronaut/core-releases-local/couchbase/_latestVersion)
+![Build Status](https://github.com/couchbaselabs/couchbase-micronaut/actions/workflows/gradle.yml/badge.svg?branch=master)
 
 This is a configuration for using Couchbase in Micronaut applications.
   
