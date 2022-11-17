@@ -4,22 +4,14 @@
 #
 # and edit them there. Note that it will be sync'ed to all the Micronaut repos
 name: GraalVM CE CI
-on:
-  push:
-    branches:
-      - master
-      - '[1-9]+.[0-9]+.x'
-  pull_request:
-    branches:
-      - master
-      - '[1-9]+.[0-9]+.x'
+on: [workflow_dispatch]
 jobs:
   build:
     if: github.repository != 'micronaut-projects/micronaut-project-template'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        graalvm: ['21.0.0.2.java8', '21.0.0.2.java11']
+        graalvm: ['21.0.0.2.java8']
     steps:
        # https://github.com/actions/virtual-environments/issues/709
       - name: Free disk space
@@ -27,27 +19,21 @@ jobs:
          sudo rm -rf "/usr/local/share/boost"
          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
          sudo apt-get clean
-         df -h    
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2.1.4
+         df -h
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3.0.8
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Setup GraalVM CE
-        uses: DeLaGuardo/setup-graalvm@4.0
+        uses: DeLaGuardo/setup-graalvm@5.0
         with:
           graalvm-version: ${{ matrix.graalvm }}
       - name: Install Native Image
         run: gu install native-image
       - name: Build with Gradle
-        run: |
-          if ./gradlew tasks --no-daemon --all | grep -w "testNativeImage"
-          then
-            ./gradlew check testNativeImage --continue --no-daemon
-          else
-            ./gradlew check --continue --no-daemon
-          fi
+        run: ./gradlew build
         env:
            TESTCONTAINERS_RYUK_DISABLED: true

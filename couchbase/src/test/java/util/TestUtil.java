@@ -1,40 +1,42 @@
 package util;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Map;
+
+import org.testcontainers.couchbase.BucketDefinition;
+import org.testcontainers.couchbase.CouchbaseContainer;
+
 import io.micronaut.configuration.couchbase.CouchbaseSettings;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.util.CollectionUtils;
-import org.testcontainers.couchbase.BucketDefinition;
-import org.testcontainers.couchbase.CouchbaseContainer;
 
-import java.io.IOException;
-import java.util.Map;
-
+@SuppressWarnings({ "resource", "unchecked" })
 public class TestUtil {
-    private TestUtil() {
-    }
 
-    /**
-     * The Couchbase Mock is a Java implementation of the Couchbase cluster used for testing.
-     *
-     * @return the ApplicationContext, configured appropriately for connecting to a constructed running Couchbase mock
-     */
-    public static ApplicationContext initCouchbaseTestContainer(String bucketName, String imageName) throws IOException, InterruptedException {
-        BucketDefinition bucketDefinition = new BucketDefinition(bucketName);
-        CouchbaseContainer container = new CouchbaseContainer(imageName)
-                .withBucket(bucketDefinition);
-
-        container.start();
-
-        Map<String, Object> settings = CollectionUtils.mapOf(
-                CouchbaseSettings.PREFIX + "." + CouchbaseSettings.URI, container.getConnectionString(),
-                CouchbaseSettings.PREFIX + "." + CouchbaseSettings.USERNAME, container.getUsername(),
-                CouchbaseSettings.PREFIX + "." + CouchbaseSettings.PASSWORD, container.getPassword());
-
-        ApplicationContext applicationContext = ApplicationContext.run(
-                PropertySource.of("test", settings),
-                "test");
-
-        return applicationContext;
-    }
+	private static final String COUCHBASE_USERNAME = "admin";
+	private static final String COUCHBASE_PASSWORD = "test123";
+	public static final String COUCHBASE_BUCKET_NAME = "default";
+	private static final String COUCHBASE_CONTAINER_BASE_IMAGE = "couchbase/server:7.1.2";
+	private static final String TEST_PROPERTY = "test";
+	private static CouchbaseContainer container;
+	public static ApplicationContext applicationContext;
+	
+	static {
+		BucketDefinition bucketDefinition = new BucketDefinition(COUCHBASE_BUCKET_NAME).withPrimaryIndex(true);
+		container = new CouchbaseContainer(COUCHBASE_CONTAINER_BASE_IMAGE)
+				.withCredentials(COUCHBASE_USERNAME, COUCHBASE_PASSWORD)
+				.withExposedPorts(8091, 8092, 8093, 8094, 8095, 8096, 9100, 9101, 9102, 9103, 9104, 9105,
+						9119, 9999, 21200, 21100, 21150, 21250)
+				.withBucket(bucketDefinition).withStartupAttempts(2).withStartupTimeout(Duration.ofMinutes(2));
+		container.setPortBindings(Arrays.asList("8091:8091", "8092:8092", "8093:8093", "8094:8094", "8095:8095",
+				"8096:8096", "9100:9100", "9101:9101", "9102:9102", "9103:9103", "9104:9104", "9105:9105", "11210:11210", "9119:9119", "9999:9999", "21200:21200", "21250:21250", "21100:21100", "21150:21150"));
+		container.start();
+		Map<String, Object> settings = CollectionUtils.mapOf(CouchbaseSettings.PREFIX + "." + CouchbaseSettings.URI,
+				container.getConnectionString(), CouchbaseSettings.PREFIX + "." + CouchbaseSettings.USERNAME,
+				container.getUsername(), CouchbaseSettings.PREFIX + "." + CouchbaseSettings.PASSWORD,
+				container.getPassword());
+		applicationContext = ApplicationContext.run(PropertySource.of(TEST_PROPERTY, settings), TEST_PROPERTY);
+	}
 }
