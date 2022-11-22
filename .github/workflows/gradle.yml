@@ -12,6 +12,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    - cron: "59 23 * * SAT"
 jobs:
   build:
     if: github.repository != 'micronaut-projects/micronaut-project-template'
