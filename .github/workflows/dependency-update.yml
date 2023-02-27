@@ -11,7 +11,7 @@ jobs:
   dependency-updates:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/cache@v3.0.8
+      - uses: actions/cache@v3.2.6
       - uses: actions/checkout@v3
         with:
           path: ~/.gradle/caches
