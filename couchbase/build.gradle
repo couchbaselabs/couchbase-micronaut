@@ -12,7 +12,7 @@ dependencies {
     testCompile "io.reactivex.rxjava2:rxjava:$rxJava2Version"
 
     testCompile "org.testcontainers:couchbase:1.17.5"
-    compile "com.couchbase.client:java-client:3.3.0"
+    compile "com.couchbase.client:java-client:3.4.8"
 
 }
 
